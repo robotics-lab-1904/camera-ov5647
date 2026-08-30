@@ -21,13 +21,13 @@
 Рабочие файлы проекта находятся в каталоге:
 
 ```text
-/home/artm1904/Program/Robot/os/camera-ov5647
+/home/artm1904/Program/Robot/robotics-lab-workspace/camera-ov5647
 ```
 
 Исходный код адаптированного драйвера находится здесь:
 
 ```text
-/home/artm1904/Program/Robot/os/linux-orangepi-sun60iw2/
+/home/artm1904/Program/Robot/robotics-lab-workspace/third_party/linux-orangepi-sun60iw2/
   bsp/drivers/vin/modules/sensor/ov5647.c
 ```
 
@@ -185,42 +185,48 @@ sha256sum \
 
 ## 4. Получение исходников ядра
 
-Использовался официальный репозиторий Orange Pi:
+Адаптированный драйвер опубликован в fork организации:
 
 ```bash
 git clone \
   --filter=blob:none \
-  --branch orange-pi-6.6-sun60iw2 \
-  https://github.com/orangepi-xunlong/linux-orangepi.git \
+  --branch robotics/ov5647-sun60iw2 \
+  https://github.com/robotics-lab-1904/linux-orangepi.git \
   linux-orangepi-sun60iw2
 
 cd linux-orangepi-sun60iw2
 git rev-parse HEAD
 ```
 
-Проверенная ревизия:
+Текущая зафиксированная ревизия с поддержкой OV5647:
 
 ```text
-8a9be72c9006a87f786736b3aa4e2dfd971c1429
+4590a2f8f1905931e6ca943d124d9f773df7cb52
 ```
 
-Ветка:
+Vendor-база этой работы — commit
+`8a9be72c9006a87f786736b3aa4e2dfd971c1429` из ветки
+`orange-pi-6.6-sun60iw2`.
+
+Рабочая ветка:
 
 ```text
-orange-pi-6.6-sun60iw2
+robotics/ov5647-sun60iw2
 ```
 
-Также использовался Armbian Build Framework:
+В superproject Armbian Build Framework подключается как submodule:
 
 ```bash
-git clone https://github.com/armbian/build.git build
+git clone --recurse-submodules \
+  https://github.com/robotics-lab-1904/robotics-lab-workspace.git
+cd robotics-lab-workspace
 ```
 
 В нём семейство платы описано в:
 
 ```text
-build/config/sources/families/sun60iw2.conf
-build/config/boards/orangepizero3w.csc
+third_party/armbian-build/config/sources/families/sun60iw2.conf
+third_party/armbian-build/config/boards/orangepizero3w.csc
 ```
 
 ---
@@ -342,7 +348,7 @@ obj-$(CONFIG_SENSOR_OV5647) += ov5647.o
 Файл:
 
 ```text
-build/config/kernel/linux-sun60iw2-vendor.config
+third_party/armbian-build/config/kernel/linux-sun60iw2-vendor.config
 ```
 
 Добавлено:
@@ -550,7 +556,7 @@ git checkout 8a9be72c9006a87f786736b3aa4e2dfd971c1429
 С рабочей машины:
 
 ```bash
-DRIVER=/home/artm1904/Program/Robot/os/linux-orangepi-sun60iw2/\
+DRIVER=/home/artm1904/Program/Robot/robotics-lab-workspace/third_party/linux-orangepi-sun60iw2/\
 bsp/drivers/vin/modules/sensor/ov5647.c
 
 scp "$DRIVER" \
@@ -1022,8 +1028,9 @@ ov5647_2
 места.
 
 ```bash
-git clone https://github.com/armbian/build.git
-cd build
+git clone --recurse-submodules \
+  https://github.com/robotics-lab-1904/robotics-lab-workspace.git
+cd robotics-lab-workspace/third_party/armbian-build
 ```
 
 ### 16.2. Создание патча из рабочего kernel tree
@@ -1032,11 +1039,11 @@ cd build
 добавляя commit:
 
 ```bash
-cd /home/artm1904/Program/Robot/os/linux-orangepi-sun60iw2
+cd /home/artm1904/Program/Robot/robotics-lab-workspace/third_party/linux-orangepi-sun60iw2
 
 git add -N bsp/drivers/vin/modules/sensor/ov5647.c
 
-PATCH_DIR=/home/artm1904/Program/Robot/os/build/userpatches/kernel/archive/\
+PATCH_DIR=/home/artm1904/Program/Robot/robotics-lab-workspace/third_party/armbian-build/userpatches/kernel/archive/\
 sun60iw2-opi-vendor
 
 mkdir -p "$PATCH_DIR"
@@ -1052,7 +1059,7 @@ git diff -- \
 ### 16.3. Пользовательская kernel config
 
 ```bash
-cd /home/artm1904/Program/Robot/os/build
+cd /home/artm1904/Program/Robot/robotics-lab-workspace/third_party/armbian-build
 
 cp config/kernel/linux-sun60iw2-vendor.config \
    userpatches/linux-sun60iw2-vendor.config

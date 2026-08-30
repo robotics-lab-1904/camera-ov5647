@@ -1,15 +1,22 @@
 # OV5647 Camera Subsystem Instructions
 
-These rules apply to work under `camera-ov5647/` and supplement the repository-root `AGENTS.md`.
+These rules govern the camera submodule at `camera-ov5647/` inside the canonical
+`robotics-lab-workspace` checkout and supplement the superproject
+[`AGENTS.md`](../AGENTS.md).
 
 ## Required reading
 
-Before changing or testing the camera stack, read:
+Before changing or testing the camera stack from the superproject checkout,
+read:
 
-- `../docs/runbooks/OV5647_CAMERA.md`
-- `../docs/decisions/ADR-0001-OV5647-THREE-DMA-BUFFERS.md`
-- `../docs/decisions/ADR-0002-OV5647-SINGLE-V4L2-SESSION-AND-FIFO.md`
-- `../docs/worklog/2026-08-23-OV5647-CAMERA-BRINGUP.md`
+- [OV5647 camera runbook](../docs/runbooks/OV5647_CAMERA.md)
+- [ADR-0001: three DMA buffers](../docs/decisions/ADR-0001-OV5647-THREE-DMA-BUFFERS.md)
+- [ADR-0002: one V4L2 session and FIFO](../docs/decisions/ADR-0002-OV5647-SINGLE-V4L2-SESSION-AND-FIFO.md)
+- [Camera bring-up report](../docs/worklog/2026-08-23-OV5647-CAMERA-BRINGUP.md)
+
+These links intentionally depend on the canonical superproject layout. Clone
+the workspace with `--recurse-submodules` rather than using this repository as
+a standalone documentation root.
 
 ## Known-good configuration
 
@@ -50,4 +57,3 @@ media-ctl -d /dev/media0 -p
 ```
 
 Record FPS, frame count, dropped frames, bitrate, CPU load, temperature, and any VIN/MIPI/IOMMU/DMA errors in the task report.
-

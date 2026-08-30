@@ -4,7 +4,10 @@ Detailed Russian build and troubleshooting guide:
 
 [`OV5647_FULL_GUIDE_RU.md`](./OV5647_FULL_GUIDE_RU.md)
 
-Target kernel: `6.6.98-vendor-sun60iw2` from https://github.com/orangepi-xunlong/linux-orangepi/tree/orange-pi-6.6-sun60iw2
+Target kernel: `6.6.98-vendor-sun60iw2`. The adapted driver is maintained in
+the local [`third_party/linux-orangepi-sun60iw2`](../third_party/linux-orangepi-sun60iw2/)
+submodule on branch `robotics/ov5647-sun60iw2`; its vendor base is Orange Pi's
+`orange-pi-6.6-sun60iw2` branch.
 
 ## Active board configuration
 
